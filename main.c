@@ -18,6 +18,8 @@ int main() {
     sv_push_all(sv, 5, "Hello", "my", "name", "is", "brian");
     printf("%ld\n", sv->size);
     sv_print(sv);
+    free(sv_remove(sv, v_size(sv) - 1));
+    sv_print(sv);
     sv_free(sv);
     return 0;
 }

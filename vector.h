@@ -40,8 +40,8 @@
 
 #define v_free(v) free(v)
 
-#define v_get(v, i)     \
-({                               \
+#define v_get(v, i)                       \
+({                                        \
     assert(v_valid_index(v, (size_t) i)); \
     &v->data[(size_t) i];                 \
 })
@@ -58,10 +58,21 @@
     if (v->size + LIST_LEN(_items) >= v->capacity) { \
         v_resize(v, v->size + LIST_LEN(_items));     \
     }                                                \
-    for (size_t i = 0; i < LIST_LEN(_items); ++i) {     \
+    for (size_t i = 0; i < LIST_LEN(_items); ++i) {  \
         v->data[v->size++] = _items[i];              \
     }                                                \
     v;                                               \
+})
+
+#define v_remove(v, idx)                               \
+({                                                     \
+    assert(v_valid_index(v, idx));                     \
+    if (v_size(v) > 1) {                               \
+        for (size_t i = idx; i < v_size(v) - 1; ++i) { \
+            v->data[i] = v->data[i + 1];               \
+        }                                              \
+    }                                                  \
+    --v->size;                                         \
 })
 
 #define v_resize(v, new_capacity)                                         \
@@ -99,11 +110,11 @@ typedef_vector(string_t);
 typedef vector(string_t) string_vector;
 
 void sv_free(string_vector *vector);
-char* sv_get(string_vector *vector, int i);
-void sv_set(string_vector *vector, int i, char* cstring);
+char* sv_get(string_vector *vector, size_t i);
+void sv_set(string_vector *vector, size_t i, char* cstring);
 char* sv_pop(string_vector *vector);
 void sv_push_all(string_vector *vector, size_t len, ...);
 void sv_push(string_vector *vector, char* cstring);
 void sv_print(string_vector *vector);
-
+char* sv_remove(string_vector *vector, size_t i);
 
