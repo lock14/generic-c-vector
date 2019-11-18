@@ -91,8 +91,13 @@
     printf("]\n");                                    \
 })
 
+typedef_vector(char);
+typedef_vector(int);
+typedef_vector(float);
+typedef_vector(double);
 typedef_vector(string_t);
 typedef vector(string_t) string_vector;
+
 void sv_free(string_vector *vector);
 char* sv_get(string_vector *vector, int i);
 void sv_set(string_vector *vector, int i, char* cstring);

@@ -2,8 +2,6 @@
 #include "vector.h"
 #include "string_t.h"
 
-typedef_vector(int);
-
 int main() {
     vector(int) *list = new_vector(int, 1, 2, 3);
     print_vector(list);
