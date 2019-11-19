@@ -1,5 +1,15 @@
-#include <stdarg.h>
-#include "vector.h"
+//
+// Created by brian on 11/18/2019.
+//
+#include "string_vector.h"
+
+string_vector* new_string_vector() {
+    string_vector *sv = new_vector(string_t);
+    for (size_t i = 0; i < sv->capacity; ++i) {
+        v_get(sv, i)->chars = NULL;
+    }
+    return sv;
+}
 
 void sv_free(string_vector *vector) {
     for (size_t i = 0; i < vector->capacity; i++) {
@@ -8,8 +18,13 @@ void sv_free(string_vector *vector) {
     v_free(vector);
 }
 
-char* sv_get(string_vector *vector, size_t i) {
-    return v_get(vector, i)->chars;
+void sv_add(string_vector *vector, char* cstring) {
+
+}
+void sv_add_at(string_vector *vector, size_t idx, char* cstring) {
+    string_t string;
+    init_string(&string, cstring);
+    v_add(vector, idx, string);
 }
 
 void sv_set(string_vector *vector, size_t i, char* cstring) {
@@ -21,30 +36,19 @@ void sv_set(string_vector *vector, size_t i, char* cstring) {
 // user must take responsibility for freeing the
 // returned pointer
 char* sv_pop(string_vector *vector) {
-    return sv_remove(vector, v_size(vector) - 1);
-}
-
-void sv_push_all(string_vector *vector, size_t len, ...) {
-    va_list args;
-    va_start(args, len);
-    for (size_t i = 0; i < len; i++) {
-        sv_push(vector, va_arg(args, char*));
-    }
-    va_end(args);
+    return sv_remove_at(vector, v_size(vector) - 1);
 }
 
 void sv_push(string_vector *vector, char* cstring) {
-    string_t string;
-    init_string(&string, cstring);
-    v_push(vector, string);
+    sv_add_at(vector, v_size(vector), cstring);
 }
 
 // user must take responsibility for freeing the
 // returned pointer
-char* sv_remove(string_vector *vector, size_t i) {
-    assert(v_valid_index(vector, i));
-    char* ret = v_get(vector, i)->chars;
-    v_remove(vector, i);
+char* sv_remove_at(string_vector *vector, size_t idx) {
+    assert(v_valid_index(vector, idx));
+    char* ret = v_get(vector, idx)->chars;
+    v_remove_at(vector, idx);
     (&vector->data[vector->size])->chars = NULL;
     return ret;
 }
