@@ -1,8 +1,12 @@
+//
+// Created by brian on 11/18/2019.
+//
+
+#ifndef C_TEST_STRING_T_H
+#define C_TEST_STRING_T_H
+
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef STRING_T
-#define STRING_T
 
 typedef struct string_t {
     size_t length;
@@ -11,4 +15,4 @@ typedef struct string_t {
 
 void init_string(string_t *string, char *cstring);
 
-#endif
+#endif //C_TEST_STRING_T_H
