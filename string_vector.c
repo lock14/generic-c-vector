@@ -6,7 +6,7 @@
 string_vector* new_string_vector() {
     string_vector *sv = new_vector(string_t);
     for (size_t i = 0; i < sv->capacity; ++i) {
-        v_get(sv, i)->chars = NULL;
+        (&sv->data[i])->chars = NULL;
     }
     return sv;
 }
@@ -18,9 +18,6 @@ void sv_free(string_vector *vector) {
     v_free(vector);
 }
 
-void sv_add(string_vector *vector, char* cstring) {
-
-}
 void sv_add_at(string_vector *vector, size_t idx, char* cstring) {
     string_t string;
     init_string(&string, cstring);
