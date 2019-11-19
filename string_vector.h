@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include "vector.h"
+#include "string_t.h"
 
 typedef_vector(string_t);
 typedef vector(string_t) string_vector;
