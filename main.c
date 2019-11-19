@@ -5,8 +5,6 @@
 int main() {
     vector(int) *list = new_vector(int);
     print_vector(list);
-    v_set(list, 1, 100);
-    print_vector(list);
     v_push(list, 1);
     v_push(list, 2);
     v_push(list, 3);
@@ -24,7 +22,7 @@ int main() {
     print_vector(list);
     v_free(list);
 
-    string_vector *sv = new_vector(string_t);
+    string_vector *sv = new_string_vector();
     sv_push(sv, "Hello");
     sv_push(sv, "my");
     sv_push(sv, "name");
