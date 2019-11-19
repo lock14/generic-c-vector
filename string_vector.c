@@ -4,11 +4,11 @@
 #include "string_vector.h"
 
 string_vector* new_string_vector() {
-    string_vector *sv = new_vector(string_t);
-    for (size_t i = 0; i < sv->capacity; ++i) {
-        (&sv->data[i])->chars = NULL;
+    string_vector *vector = new_vector(string_t);
+    for (size_t i = 0; i < vector->capacity; ++i) {
+        (&vector->data[i])->chars = NULL;
     }
-    return sv;
+    return vector;
 }
 
 void sv_free(string_vector *vector) {
@@ -18,16 +18,28 @@ void sv_free(string_vector *vector) {
     v_free(vector);
 }
 
-void sv_add_at(string_vector *vector, size_t idx, char* cstring) {
+void sv_add(string_vector *vector, size_t idx, char *cstring) {
     string_t string;
     init_string(&string, cstring);
+    size_t old_capacity = vector->capacity;
     v_add(vector, idx, string);
+    if (vector->capacity != old_capacity) {
+        for (size_t i = old_capacity + 1; i < vector->capacity; ++i) {
+            (&vector->data[i])->chars = NULL;
+        }
+    }
 }
 
-void sv_set(string_vector *vector, size_t i, char* cstring) {
-    string_t *string = v_get(vector, i);
-    free(string->chars);
-    init_string(string, cstring);
+char* sv_get(string_vector *vector, size_t i) {
+    return v_get(vector, i)->chars;
+}
+
+string_t* sv_get_val(string_vector *vector, size_t i) {
+    return v_get(vector, i);
+}
+
+bool sv_is_empty(string_vector *vector) {
+    return v_is_empty(vector);
 }
 
 // user must take responsibility for freeing the
@@ -37,7 +49,7 @@ char* sv_pop(string_vector *vector) {
 }
 
 void sv_push(string_vector *vector, char* cstring) {
-    sv_add_at(vector, v_size(vector), cstring);
+    sv_add(vector, v_size(vector), cstring);
 }
 
 // user must take responsibility for freeing the
@@ -48,6 +60,16 @@ char* sv_remove_at(string_vector *vector, size_t idx) {
     v_remove_at(vector, idx);
     (&vector->data[vector->size])->chars = NULL;
     return ret;
+}
+
+void sv_set(string_vector *vector, size_t i, char* cstring) {
+    string_t *string = v_get(vector, i);
+    free(string->chars);
+    init_string(string, cstring);
+}
+
+size_t sv_size(string_vector *vector) {
+    return v_size(vector);
 }
 
 void sv_print(string_vector *vector) {
