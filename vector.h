@@ -26,23 +26,14 @@
         T data[];              \
     } vector(T)
 
-#define new_vector(T, items...)                                               \
-({                                                                            \
-    const T _items[] = {items};                                               \
-    size_t initial_size = 10;                                                 \
-    const size_t num_items = LIST_LEN(_items);                                \
-    if (initial_size < num_items) {                                           \
-        initial_size = num_items;                                             \
-    }                                                                         \
-    vector(T) *v = malloc(sizeof(vector(T)) + sizeof(T) * initial_size);      \
-    v->capacity = initial_size;                                               \
-    v->size = num_items;                                                      \
-    memset(v->data, 0, v->capacity * sizeof(T));                              \
-                                                                              \
-    for (size_t i = 0; i < v->size; ++i) {                                    \
-        v->data[i] = _items[i];                                               \
-    }                                                                         \
-    v;                                                                        \
+#define new_vector(T)                                                      \
+({                                                                         \
+    size_t initial_size = 10;                                              \
+    vector(T) *v = malloc(sizeof(vector_base) + sizeof(T) * initial_size); \
+    v->capacity = initial_size;                                            \
+    v->size = 0;                                                           \
+    memset(v->data, 0, v->capacity * sizeof(T));                           \
+    v;                                                                     \
 })
 
 #define v_free(v) free(v)
@@ -87,12 +78,12 @@
     --v->size;                                         \
 })
 
-#define v_resize(v, new_capacity)                                         \
-({                                                                        \
-    assert(size_t(new_capacity) > v->capacity);                           \
-    v->capacity = new_capacity;                                           \
-    v = realloc(v, sizeof(vector_base) + v->capacity * sizeof(*v->data)); \
-    memset(v + v->size, 0, (v->capacity - v->size) * sizeof(*v->data));   \
+#define v_resize(v, new_capacity)                                             \
+({                                                                            \
+    assert(size_t(new_capacity) > v->capacity);                               \
+    v->capacity = new_capacity;                                               \
+    v = realloc(v, sizeof(vector_base) + v->capacity * sizeof(*v->data));     \
+    memset(v->data + v->size, 0, (v->capacity - v->size) * sizeof(*v->data)); \
 })
 
 #define v_set(v, i, va) v_get_val(v, i) = va
