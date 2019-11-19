@@ -1,3 +1,6 @@
+//
+// Created by brian on 11/18/2019.
+//
 #include "string_t.h"
 
 void init_string(string_t *string, char *cstring) {
