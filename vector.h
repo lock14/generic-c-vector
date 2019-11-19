@@ -38,19 +38,19 @@
 
 #define v_free(v) free(v)
 
-#define v_add(v, idx, e)                                \
-({                                                      \
-   if (size_t(idx) != v->size) {                        \
-       assert(v_valid_index(v, idx));                   \
-   }                                                    \
-   if (v->size == v->capacity) {                        \
-       v_resize(v, (v->capacity + (v->capacity >> 1))); \
-   }                                                    \
-   for (size_t i = v->size; i > idx; --i) {             \
-       v->data[i] = v->data[i - 1];                     \
-   }                                                    \
-   v->data[idx] = e;                                    \
-   ++v->size;                                           \
+#define v_add(v, idx, e)                                 \
+({                                                       \
+   if (size_t(idx) != v->size) {                         \
+       assert(v_valid_index(v, idx));                    \
+   }                                                     \
+   if (v->size == v->capacity) {                         \
+       v_resize(v, (v->capacity + (v->capacity >> 1u))); \
+   }                                                     \
+   for (size_t i = v->size; i > idx; --i) {              \
+       v->data[i] = v->data[i - 1];                      \
+   }                                                     \
+   v->data[idx] = e;                                     \
+   ++v->size;                                            \
 })
 
 #define v_get(v, i)                       \
