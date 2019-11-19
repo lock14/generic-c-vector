@@ -1,3 +1,10 @@
+//
+// Created by brian on 11/17/2019.
+//
+
+#ifndef C_TEST_VECTOR_H
+#define C_TEST_VECTOR_H
+
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,31 +47,36 @@
 
 #define v_free(v) free(v)
 
+#define v_add(v, idx, e)                                \
+({                                                      \
+   if (size_t(idx) != v->size) {                        \
+       assert(v_valid_index(v, idx));                   \
+   }                                                    \
+   if (v->size == v->capacity) {                        \
+       v_resize(v, (v->capacity + (v->capacity >> 1))); \
+   }                                                    \
+   for (size_t i = v->size; i > idx; --i) {             \
+       v->data[i] = v->data[i - 1];                     \
+   }                                                    \
+   v->data[idx] = e;                                    \
+   ++v->size;                                           \
+})
+
 #define v_get(v, i)                       \
 ({                                        \
-    assert(v_valid_index(v, (size_t) i)); \
+    assert(v_valid_index(v, i));          \
     &v->data[(size_t) i];                 \
 })
 
 #define v_get_val(v, i) (*v_get(v, i))
 
-#define v_is_empty(v) (v->size == 0)
+#define v_is_empty(v) (v_size(v) == 0)
 
 #define v_pop(v) (v->data[--v->size])
 
-#define v_push(v, items...)                          \
-({                                                   \
-    const typeof(*v->data) _items[] = {items};       \
-    if (v->size + LIST_LEN(_items) >= v->capacity) { \
-        v_resize(v, v->size + LIST_LEN(_items));     \
-    }                                                \
-    for (size_t i = 0; i < LIST_LEN(_items); ++i) {  \
-        v->data[v->size++] = _items[i];              \
-    }                                                \
-    v;                                               \
-})
+#define v_push(v, e) v_add(v, v_size(v), e)
 
-#define v_remove(v, idx)                               \
+#define v_remove_at(v, idx)                            \
 ({                                                     \
     assert(v_valid_index(v, idx));                     \
     if (v_size(v) > 1) {                               \
@@ -77,17 +89,19 @@
 
 #define v_resize(v, new_capacity)                                         \
 ({                                                                        \
-    while (v->capacity <= new_capacity) {                                 \
-        v->capacity = (v->capacity + (v->capacity >> 1));                 \
-    }                                                                     \
+    assert(size_t(new_capacity) > v->capacity);                           \
+    v->capacity = new_capacity;                                           \
     v = realloc(v, sizeof(vector_base) + v->capacity * sizeof(*v->data)); \
+    memset(v + v->size, 0, (v->capacity - v->size) * sizeof(*v->data));   \
 })
 
 #define v_set(v, i, va) v_get_val(v, i) = va
 
 #define v_size(v) v->size
 
-#define v_valid_index(v, i) (i < v->size)
+#define v_valid_index(v, i) (size_t(i) < v->size)
+
+#define size_t(i) ((size_t) i)
 
 #define GET_FMT_SPEC(x) _Generic((x), int: "%d", float: "%f", char*: "%s", char: "%c")
 
@@ -102,19 +116,14 @@
     printf("]\n");                                    \
 })
 
+// typedef vector for common types
+
 typedef_vector(char);
+typedef_vector(short);
 typedef_vector(int);
+typedef_vector(long);
 typedef_vector(float);
 typedef_vector(double);
-typedef_vector(string_t);
-typedef vector(string_t) string_vector;
 
-void sv_free(string_vector *vector);
-char* sv_get(string_vector *vector, size_t i);
-void sv_set(string_vector *vector, size_t i, char* cstring);
-char* sv_pop(string_vector *vector);
-void sv_push_all(string_vector *vector, size_t len, ...);
-void sv_push(string_vector *vector, char* cstring);
-void sv_print(string_vector *vector);
-char* sv_remove(string_vector *vector, size_t i);
 
+#endif //C_TEST_VECTOR_H
