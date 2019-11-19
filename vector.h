@@ -53,10 +53,10 @@
    ++v->size;                                            \
 })
 
-#define v_get(v, i)                       \
-({                                        \
-    assert(v_valid_index(v, i));          \
-    &v->data[(size_t) i];                 \
+#define v_get(v, i)              \
+({                               \
+    assert(v_valid_index(v, i)); \
+    &v->data[(size_t) i];        \
 })
 
 #define v_get_val(v, i) (*v_get(v, i))
