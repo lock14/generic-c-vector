@@ -8,9 +8,6 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "string_t.h"
-
-#define LIST_LEN(a) (sizeof(a) / sizeof(*a))
 
 #define vector(T) vector_##T
 
