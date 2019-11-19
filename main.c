@@ -1,6 +1,5 @@
 #include <stdbool.h>
-#include "vector.h"
-#include "string_t.h"
+#include "string_vector.h"
 
 int main() {
     vector(int) *list = new_vector(int);
