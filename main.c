@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     print_vector(list);
     printf("%d\n", v_is_empty(list));
     printf("%d\n", v_pop(list));
-    print_vector(list);
+    v_print(list);
     v_free(list);
 
     string_vector *sv = new_string_vector();
