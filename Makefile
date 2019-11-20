@@ -1,4 +1,4 @@
-# souce: http://www.puxan.com/web/howto-write-generic-makefiles/
+# source: http://www.puxan.com/web/howto-write-generic-makefiles/
 # Declaration of variables
 CC = gcc
 CC_FLAGS = -std=gnu11 -Wall -Wextra -Werror
