@@ -93,7 +93,7 @@
 
 #define GET_FMT_SPEC(x) _Generic((x), int: "%d", float: "%f", char*: "%s", char: "%c")
 
-#define print_vector(v)                               \
+#define v_print(v)                                    \
 ({                                                    \
     printf("[");                                      \
     for (size_t i = 0; i < v->size; ++i) {            \
