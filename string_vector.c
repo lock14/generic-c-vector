@@ -3,6 +3,18 @@
 //
 #include "string_vector.h"
 
+void init_string(string_t *string, char *cstring) {
+    if (cstring != NULL) {
+        string->length = strlen(cstring);
+        string->chars = (char *) malloc((string->length + 1) * sizeof(char));
+        strcpy(string->chars, cstring);
+    } else {
+        string->length = 0;
+        string->chars = NULL;
+    }
+
+}
+
 string_vector* new_string_vector() {
     string_vector *vector = new_vector(string_t);
     for (size_t i = 0; i < vector->capacity; ++i) {
@@ -38,6 +50,10 @@ string_t* sv_get_val(string_vector *vector, size_t i) {
     return v_get(vector, i);
 }
 
+char* sv_get_cstring(string_vector *vector, size_t i) {
+    return v_get(vector, i)->chars;
+}
+
 bool sv_is_empty(string_vector *vector) {
     return v_is_empty(vector);
 }
@@ -45,7 +61,7 @@ bool sv_is_empty(string_vector *vector) {
 // user must take responsibility for freeing the
 // returned pointer
 char* sv_pop(string_vector *vector) {
-    return sv_remove_at(vector, v_size(vector) - 1);
+    return sv_remove(vector, v_size(vector) - 1);
 }
 
 void sv_push(string_vector *vector, char* cstring) {
@@ -54,10 +70,10 @@ void sv_push(string_vector *vector, char* cstring) {
 
 // user must take responsibility for freeing the
 // returned pointer
-char* sv_remove_at(string_vector *vector, size_t idx) {
+char* sv_remove(string_vector *vector, size_t idx) {
     assert(v_valid_index(vector, idx));
     char* ret = v_get(vector, idx)->chars;
-    v_remove_at(vector, idx);
+    v_remove(vector, idx);
     (&vector->data[vector->size])->chars = NULL;
     return ret;
 }

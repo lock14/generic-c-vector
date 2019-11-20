@@ -64,7 +64,7 @@
 
 #define v_push(v, e) v_add(v, v_size(v), e)
 
-#define v_remove_at(v, idx)                            \
+#define v_remove(v, idx)                               \
 ({                                                     \
     assert(v_valid_index(v, idx));                     \
     if (v_size(v) > 1) {                               \

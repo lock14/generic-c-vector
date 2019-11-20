@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include "string_vector.h"
 
-int main() {
+int main(int argc, char* argv[]) {
     vector(int) *list = new_vector(int);
     print_vector(list);
     v_push(list, 1);
@@ -32,6 +32,14 @@ int main() {
     free(sv_pop(sv));
     sv_print(sv);
     sv_free(sv);
+
+
+    string_vector *args = new_string_vector();
+    for (int i = 0; i < argc; i++) {
+        sv_push(args, argv[i]);
+    }
+    sv_print(args);
+    sv_free(args);
     return 0;
 }
 
